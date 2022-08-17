@@ -30,6 +30,7 @@ export const shapeTpc = function(tpc: Topic, nodeObj: NodeObj) {
     tpc.style.fontSize = nodeObj.style.fontSize + 'px'
     tpc.style.fontWeight = nodeObj.style.fontWeight || 'normal'
     tpc.style.textDecoration = nodeObj.style.textDecoration || 'initial'
+    tpc.style.fontStyle = nodeObj.style.fontStyle || 'normal'
   }
 
   // TODO allow to add online image

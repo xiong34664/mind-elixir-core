@@ -32,12 +32,14 @@ export const updateNodeStyle = function(object) {
     fontSize: nodeEle.style.fontSize && nodeEle.style.fontSize + 'px',
     fontWeight: nodeEle.style.fontWeight,
     textDecoration: nodeEle.style.textDecoration,
+    fontStyle: nodeEle.style.fontStyle,
   }
   nodeEle.style.color = object.style.color
   nodeEle.style.background = object.style.background
   nodeEle.style.fontSize = object.style.fontSize + 'px'
   nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
   nodeEle.style.textDecoration = object.style.textDecoration || 'initial'
+  nodeEle.style.fontStyle = object.style.fontStyle || 'normal'
   this.linkDiv()
   this.bus.fire('operation', {
     name: 'editStyle',

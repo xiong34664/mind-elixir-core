@@ -208,6 +208,27 @@ export default {
               fontWeight: 'bold',
             },
           },
+          {
+            topic: '文字斜体',
+            id: 'bd41fd4ca323222a',
+            style: {
+              fontStyle: 'italic',
+            },
+          },
+          {
+            topic: '文字下划线',
+            id: 'bd41fd4ca32322a5',
+            style: {
+              textDecoration: 'underline',
+            },
+          },
+          {
+            topic: '文字中划线',
+            id: 'bd41fd4ca32322a6',
+            style: {
+              textDecoration: 'line-through',
+            },
+          },
         ],
       },
       {
@@ -222,26 +243,26 @@ export default {
           },
         ],
       },
-      {
-        topic: '未来功能',
-        id: 'bd1facea32a1967c',
-        direction: 1,
-        expanded: true,
-        children: [
-          {
-            topic: '节点插入图片',
-            id: 'bd1fb1ec53010749',
-          },
-          {
-            topic: '自由节点',
-            id: 'bd42d3e3bee992b9',
-          },
-          {
-            topic: '样式优化',
-            id: 'beeb7f3db6ad6496',
-          },
-        ],
-      },
+      // {
+      //   topic: '未来功能',
+      //   id: 'bd1facea32a1967c',
+      //   direction: 1,
+      //   expanded: true,
+      //   children: [
+      //     {
+      //       topic: '节点插入图片',
+      //       id: 'bd1fb1ec53010749',
+      //     },
+      //     {
+      //       topic: '自由节点',
+      //       id: 'bd42d3e3bee992b9',
+      //     },
+      //     {
+      //       topic: '样式优化',
+      //       id: 'beeb7f3db6ad6496',
+      //     },
+      //   ],
+      // },
       {
         topic: '导出数据',
         id: 'beeb7586973430db',

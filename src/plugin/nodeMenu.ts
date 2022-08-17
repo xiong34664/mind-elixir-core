@@ -54,14 +54,19 @@ export default function(mind) {
     ${['underline', 'line-through']
     .map(type => {
       return `<div class="text-decoration"  data-type="${type}">
-    <svg class="icon" style="width: 24px;height: 24px" aria-hidden="true">
+    <svg class="icon" style="width: 18px;height: 18px" aria-hidden="true">
       <use xlink:href="#icon-${type}"></use>
     </svg></div>`
     })
     .join('')}
     <div class="bold">
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" style="width: 18px;height: 18px" aria-hidden="true">
         <use xlink:href="#icon-B"></use>
+      </svg>
+    </div>
+    <div class="font-style">
+      <svg class="icon" style="width: 18px;height: 18px" aria-hidden="true">
+        <use xlink:href="#icon-italic"></use>
       </svg>
     </div>
   </div>
@@ -99,6 +104,7 @@ export default function(mind) {
   // query input element
   const sizeSelector = menuContainer.querySelectorAll('.size')
   const textDecoration = menuContainer.querySelectorAll('.text-decoration')
+  const fontStyle:HTMLElement = menuContainer.querySelector('.font-style')
   const bold:HTMLElement = menuContainer.querySelector('.bold')
   const buttonContainer:HTMLElement = menuContainer.querySelector('.button-container')
   const fontBtn:HTMLElement = menuContainer.querySelector('.font')
@@ -185,6 +191,18 @@ export default function(mind) {
       mind.updateNodeStyle(mind.currentNode.nodeObj)
     }
   }
+  fontStyle.onclick = (e: MouseEvent & { currentTarget: Element }) => {
+    if (!mind.currentNode.nodeObj.style) mind.currentNode.nodeObj.style = {}
+    if (mind.currentNode.nodeObj.style.fontStyle === 'italic') {
+      delete mind.currentNode.nodeObj.style.fontStyle
+      e.currentTarget.className = 'font-style'
+      mind.updateNodeStyle(mind.currentNode.nodeObj)
+    } else {
+      mind.currentNode.nodeObj.style.fontStyle = 'italic'
+      e.currentTarget.className = 'font-style size-selected'
+      mind.updateNodeStyle(mind.currentNode.nodeObj)
+    }
+  }
   tagInput.onchange = (e:InputEvent & { target: HTMLInputElement}) => {
     if (!mind.currentNode) return
     if (typeof e.target.value === 'string') {
@@ -231,6 +249,7 @@ export default function(mind) {
     clearSelect('.text-decoration', 'size-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
+    clearSelect('.font-style', 'size-selected')
     bgOrFont = 'font'
     fontBtn.className = 'font selected'
     fontBtn.nextElementSibling.className = 'background'
@@ -246,6 +265,7 @@ export default function(mind) {
         ).className = 'text-decoration size-selected'
       }
       if (nodeObj.style.fontWeight) { menuContainer.querySelector('.bold').className = 'bold size-selected' }
+      if (nodeObj.style.fontStyle) { menuContainer.querySelector('.font-style').className = 'font-style size-selected' }
       if (nodeObj.style.color) {
         menuContainer.querySelector(
           '.palette[data-color="' + nodeObj.style.color + '"]'

@@ -98,6 +98,7 @@ export interface NodeObj {
     background?: string
     fontWeight?: string
     textDecoration?: string
+    fontStyle?: string
   }
   parent?: NodeObj
   children?: NodeObj[]

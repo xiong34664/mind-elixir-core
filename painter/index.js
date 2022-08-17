@@ -25,7 +25,7 @@ function generateSvgDom() {
     let bottom = top + rect.height
     let left = primaryNode.offsetLeft
     let right = left + rect.width
-    
+
     if (top < maxTop) {
       maxTop = top
     }
@@ -38,8 +38,8 @@ function generateSvgDom() {
     if (right > maxRight) {
       maxRight = right
     }
-  } 
-  
+  }
+
   for (let i = 0; i < primaryNodes.length; i++) {
     let primaryNode = primaryNodes[i]
     if(primaryNode.tagName === 'ROOT') continue
@@ -73,29 +73,25 @@ function createSvg(height, width) {
 function RootToSvg() {
   let root = $d.querySelector('root')
   let rootTpc = $d.querySelector('root > tpc')
-  let rect = rootTpc.getBoundingClientRect()
+  let rect = root.getBoundingClientRect()
   let top = 0
   let left = 0
   let nodeObj = $d.querySelector('root > tpc').nodeObj
   let rootOffsetY = root.offsetTop - maxTop
   let rootOffsetX = root.offsetLeft - maxLeft
-
   let svg2ndEle = $d.querySelector('.svg2nd')
-
+  // tpc样式属性
+  let tpcStyle = getComputedStyle(rootTpc)
   let svg2nd = `<g transform="translate(${IMG_PADDING - maxLeft}, ${
     IMG_PADDING - maxTop
   })">${svg2ndEle.innerHTML}</g>`
   return (
     svg2nd +
-    `<g id="root" transform="translate(${rootOffsetX + IMG_PADDING}, ${
-      rootOffsetY + IMG_PADDING
-    })">
-      <rect x="${left}" y="${top}" rx="5px" ry="5px" width="${
-      rect.width
-    }" height="${rect.height}" style="fill: #00aaff;"></rect>
-      <text x="${left + 15}" y="${
-      top + 35
-    }" text-anchor="start" align="top" anchor="start" font-family="微软雅黑" font-size="25px" font-weight="normal" fill="#ffffff">
+    `<g id="root" transform="translate(${rootOffsetX + IMG_PADDING}, ${rootOffsetY + IMG_PADDING})">
+      <rect x="${left}" y="${top}" rx="5px" ry="5px" width="${rect.width}" height="${rect.height}" style="fill: ${tpcStyle.backgroundColor}"></rect>
+      <text x="${left + 15}" y="${top + 10 + parseInt(tpcStyle.fontSize)}" text-anchor="start" align="top" anchor="start" font-family="微软雅黑" font-size="${
+      tpcStyle.fontSize
+    }" text-decoration="${tpcStyle.textDecoration}" font-style="${tpcStyle.fontStyle}" font-weight="${tpcStyle.fontWeight}" fill="${tpcStyle.color}">
         ${nodeObj.topic}
       </text>
   </g>`
@@ -179,7 +175,7 @@ function PrimaryToSvg(primaryNode) {
     svg += `<g id="${nodeObj.id}">
       ${border}
       ${backgroundColor}
-      <text x="${topicOffsetLeft}" y="${topicOffsetTop}" text-anchor="start" align="top" anchor="start" font-family="微软雅黑" font-size="${tpcStyle.fontSize}" font-weight="${tpcStyle.fontWeight}" fill="${tpcStyle.color}">
+      <text x="${topicOffsetLeft}" y="${topicOffsetTop}" text-anchor="start" align="top" anchor="start" font-family="微软雅黑" font-size="${tpcStyle.fontSize}" text-decoration="${tpcStyle.textDecoration}" font-style="${tpcStyle.fontStyle}" font-weight="${tpcStyle.fontWeight}" fill="${tpcStyle.color}">
         ${nodeObj.topic}
         ${icons}
       </text>

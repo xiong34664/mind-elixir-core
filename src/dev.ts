@@ -1,9 +1,8 @@
 import MindElixir, { E } from './index'
 import MindElixirLite from './index.lite'
 import { exportSvg, exportPng } from '../painter/index'
-import example from './exampleData/1'
+import example from './exampleData/1.cn'
 import example2 from './exampleData/2'
-import example3 from './exampleData/3'
 
 interface Window {
   currentOperation: any
@@ -19,12 +18,18 @@ declare let window: Window
 const options = {
   el: '#map',
   newTopicName: '子节点',
-  direction: MindElixir.SIDE,
-  // direction: MindElixir.RIGHT,
-  locale: 'en',
-  draggable: true,
-  editable: true,
-  contextMenu: true,
+  direction: MindElixir.LEFT,
+  draggable: true, // default true
+  contextMenu: true, // default true
+  toolBar: true, // default true
+  nodeMenu: true, // default true
+  keypress: true, // default true
+  locale: 'zh_CN', // [zh_CN,zh_TW,en,ja,pt] waiting for PRs
+  overflowHidden: false, // default false
+  primaryLinkStyle: 2, // [1,2] default 1
+  primaryNodeVerticalGap: 15, // default 25
+  primaryNodeHorizontalGap: 15, // default 65
+  mobileMenu: true, // default false
   contextMenuOption: {
     focus: true,
     link: true,
@@ -37,32 +42,20 @@ const options = {
       },
     ],
   },
-  toolBar: true,
-  nodeMenu: true,
-  keypress: true,
   allowUndo: false,
   before: {
-    moveDownNode() {
-      return false
-    },
     insertSibling(el, obj) {
-      console.log('insertSibling', el, obj)
       return true
     },
     async addChild(el, obj) {
-      console.log('addChild', el, obj)
-      // await sleep()
+      await sleep()
       return true
     },
   },
-  primaryLinkStyle: 1,
-  primaryNodeVerticalGap: 15, // 25
-  primaryNodeHorizontalGap: 15, // 65
 }
 
 const mind = new (MindElixir as any)(options)
 
-const data = MindElixir.new('new topic')
 mind.init(example) // or try `example`
 function sleep() {
   return new Promise<void>((res, rej) => {
