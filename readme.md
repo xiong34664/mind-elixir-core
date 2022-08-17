@@ -1,22 +1,22 @@
 ![mindelixir logo](https://raw.githubusercontent.com/ssshooter/mind-elixir-core/master/images/logo.png)
 
 <p>
-  <a href="https://www.npmjs.com/package/mind-elixir">
-    <img src="https://img.shields.io/npm/v/mind-elixir" alt="version">
+  <a href="https://www.npmjs.com/package/mk-mind-elixir">
+    <img src="https://img.shields.io/npm/v/mk-mind-elixir" alt="version">
   </a>
-  <img src="https://img.shields.io/npm/l/mind-elixir" alt="license">
+  <img src="https://img.shields.io/npm/l/mk-mind-elixir" alt="license">
   <a href="https://app.codacy.com/gh/ssshooter/mind-elixir-core?utm_source=github.com&utm_medium=referral&utm_content=ssshooter/mind-elixir-core&utm_campaign=Badge_Grade_Settings">
     <img src="https://api.codacy.com/project/badge/Grade/09fadec5bf094886b30cea6aabf3a88b" alt="code quality">
   </a>
-  <a href="https://bundlephobia.com/result?p=mind-elixir">
-    <img src="https://badgen.net/bundlephobia/dependency-count/mind-elixir" alt="dependency-count">
+  <a href="https://bundlephobia.com/result?p=mk-mind-elixir">
+    <img src="https://badgen.net/bundlephobia/dependency-count/mk-mind-elixir" alt="dependency-count">
   </a>
-  <a href="https://packagephobia.com/result?p=mind-elixir">
-    <img src="https://packagephobia.com/badge?p=mind-elixir" alt="dependency-count">
+  <a href="https://packagephobia.com/result?p=mk-mind-elixir">
+    <img src="https://packagephobia.com/badge?p=mk-mind-elixir" alt="dependency-count">
   </a>
 </p>
 
-[中文 README](https://github.com/ssshooter/mind-elixir-core/blob/master/readme.cn.md)
+[中文 README](https://github.com/xiong34664/mind-elixir-core/blob/master/readme.cn.md)
 
 Mind elixir is a free open source mind map core.
 
@@ -51,7 +51,7 @@ npm i mind-elixir -S
 ```
 
 ```javascript
-import MindElixir, { E } from 'mind-elixir'
+import MindElixir, { E } from 'mk-mind-elixir'
 ```
 
 #### Script tag
@@ -77,7 +77,7 @@ import MindElixir, { E } from 'mind-elixir'
 **Breaking Change** since 1.0.0, `data` should be passed to `init()`, not `options`.
 
 ```javascript
-import MindElixir, { E } from 'mind-elixir'
+import MindElixir, { E } from 'mk-mind-elixir'
 import { exportSvg, exportPng } from '../dist/painter'
 import example from '../dist/example1'
 
@@ -217,10 +217,15 @@ let mind = new MindElixir({
 **WIP**
 
 ```javascript
-import painter from 'mind-elixir/dist/painter'
+import painter from 'mk-mind-elixir/dist/painter'
 painter.exportSvg()
 painter.exportPng()
 ```
+### Modify description
+
+Add font style settings (italic, line-through, underline)
+
+![mindelixir](https://raw.githubusercontent.com/xiong34664/mind-elixir-core/master/images/update.png)
 
 ## Doc
 
