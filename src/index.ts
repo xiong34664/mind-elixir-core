@@ -90,21 +90,22 @@ type operation = {
   name: string
 }
 export interface NodeObj {
-  topic: string,
-  id: string,
+  topic: string
+  id: string
   style?: {
-    fontSize?: string,
-    color?: string,
-    background?: string,
+    fontSize?: string
+    color?: string
+    background?: string
     fontWeight?: string
-  },
-  parent?: NodeObj,
-  children?: NodeObj[],
-  tags?: string[],
-  icons?: string[],
-  hyperLink?: string,
-  expanded?: boolean,
-  direction?: number,
+    textDecoration?: string
+  }
+  parent?: NodeObj
+  children?: NodeObj[]
+  tags?: string[]
+  icons?: string[]
+  hyperLink?: string
+  expanded?: boolean
+  direction?: number
   root?: boolean
 }
 

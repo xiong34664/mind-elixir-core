@@ -48,9 +48,22 @@ export default function(mind) {
       <use xlink:href="#icon-a"></use>
     </svg></div>`
     })
-    .join('')}<div class="bold"><svg class="icon" aria-hidden="true">
-<use xlink:href="#icon-B"></use>
-</svg></div>
+    .join('')}
+  </div>
+  <div class="nm-fontsize-container">
+    ${['underline', 'line-through']
+    .map(type => {
+      return `<div class="text-decoration"  data-type="${type}">
+    <svg class="icon" style="width: 24px;height: 24px" aria-hidden="true">
+      <use xlink:href="#icon-${type}"></use>
+    </svg></div>`
+    })
+    .join('')}
+    <div class="bold">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-B"></use>
+      </svg>
+    </div>
   </div>
   <div class="nm-fontcolor-container">
     ${colorList
@@ -66,7 +79,7 @@ export default function(mind) {
   const tagDiv = createDiv('nm-tag', `${i18n[locale].tag}<input class="nm-tag" tabindex="-1" placeholder="${i18n[locale].tagsSeparate}" />`)
   const iconDiv = createDiv('nm-icon', `${i18n[locale].icon}<input class="nm-icon" tabindex="-1" placeholder="${i18n[locale].iconsSeparate}" />`)
   const urlDiv = createDiv('nm-url', `${i18n[locale].url}<input class="nm-url" tabindex="-1" />`)
-  const memoDiv = createDiv('nm-memo', `${i18n[locale].memo || 'Memo'}<textarea class="nm-memo" rows="5" tabindex="-1" />`)
+  // const memoDiv = createDiv('nm-memo', `${i18n[locale].memo || 'Memo'}<textarea class="nm-memo" rows="5" tabindex="-1" />`)
 
   // create container
   const menuContainer = document.createElement('nmenu')
@@ -79,19 +92,20 @@ export default function(mind) {
   menuContainer.appendChild(tagDiv)
   menuContainer.appendChild(iconDiv)
   menuContainer.appendChild(urlDiv)
-  menuContainer.appendChild(memoDiv)
+  // menuContainer.appendChild(memoDiv)
   menuContainer.hidden = true
   mind.container.append(menuContainer)
 
   // query input element
   const sizeSelector = menuContainer.querySelectorAll('.size')
+  const textDecoration = menuContainer.querySelectorAll('.text-decoration')
   const bold:HTMLElement = menuContainer.querySelector('.bold')
   const buttonContainer:HTMLElement = menuContainer.querySelector('.button-container')
   const fontBtn:HTMLElement = menuContainer.querySelector('.font')
   const tagInput:HTMLInputElement = mind.container.querySelector('.nm-tag')
   const iconInput:HTMLInputElement = mind.container.querySelector('.nm-icon')
   const urlInput:HTMLInputElement = mind.container.querySelector('.nm-url')
-  const memoInput:HTMLInputElement = mind.container.querySelector('.nm-memo')
+  // const memoInput:HTMLInputElement = mind.container.querySelector('.nm-memo')
 
   // handle input and button click
   let bgOrFont
@@ -143,6 +157,22 @@ export default function(mind) {
       }
     }
   )
+  Array.from(textDecoration).map(
+    dom => {
+      (dom as HTMLElement).onclick = e => {
+        if (!mind.currentNode.nodeObj.style) mind.currentNode.nodeObj.style = {}
+        clearSelect('.text-decoration', 'size-selected')
+        const text = e.currentTarget as HTMLElement
+        if (mind.currentNode.nodeObj.style.textDecoration === text.dataset.type) {
+          delete mind.currentNode.nodeObj.style.textDecoration
+        } else {
+          mind.currentNode.nodeObj.style.textDecoration = text.dataset.type
+          text.className = 'text-decoration size-selected'
+        }
+        mind.updateNodeStyle(mind.currentNode.nodeObj)
+      }
+    }
+  )
   bold.onclick = (e:MouseEvent & { currentTarget: Element}) => {
     if (!mind.currentNode.nodeObj.style) mind.currentNode.nodeObj.style = {}
     if (mind.currentNode.nodeObj.style.fontWeight === 'bold') {
@@ -173,10 +203,10 @@ export default function(mind) {
     if (!mind.currentNode) return
     mind.updateNodeHyperLink(mind.currentNode.nodeObj, e.target.value)
   }
-  memoInput.onchange = (e:InputEvent & { target: HTMLInputElement}) => {
-    if (!mind.currentNode) return
-    mind.currentNode.nodeObj.memo = e.target.value
-  }
+  // memoInput.onchange = (e:InputEvent & { target: HTMLInputElement}) => {
+  //   if (!mind.currentNode) return
+  //   mind.currentNode.nodeObj.memo = e.target.value
+  // }
   let state = 'open'
   buttonContainer.onclick = e => {
     if (state === 'open') {
@@ -198,6 +228,7 @@ export default function(mind) {
     if (!clickEvent) return
     menuContainer.hidden = false
     clearSelect('.palette', 'nmenu-selected')
+    clearSelect('.text-decoration', 'size-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
     bgOrFont = 'font'
@@ -208,6 +239,11 @@ export default function(mind) {
         menuContainer.querySelector(
           '.size[data-size="' + nodeObj.style.fontSize + '"]'
         ).className = 'size size-selected'
+      }
+      if (nodeObj.style.textDecoration) {
+        menuContainer.querySelector(
+          '.text-decoration[data-type="' + nodeObj.style.textDecoration + '"]'
+        ).className = 'text-decoration size-selected'
       }
       if (nodeObj.style.fontWeight) { menuContainer.querySelector('.bold').className = 'bold size-selected' }
       if (nodeObj.style.color) {
@@ -227,6 +263,6 @@ export default function(mind) {
       iconInput.value = ''
     }
     urlInput.value = nodeObj.hyperLink || ''
-    memoInput.value = nodeObj.memo || ''
+    // memoInput.value = nodeObj.memo || ''
   })
 }

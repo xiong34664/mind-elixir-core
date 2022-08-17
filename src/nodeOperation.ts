@@ -31,11 +31,13 @@ export const updateNodeStyle = function(object) {
     background: nodeEle.style.background && rgbHex(nodeEle.style.background),
     fontSize: nodeEle.style.fontSize && nodeEle.style.fontSize + 'px',
     fontWeight: nodeEle.style.fontWeight,
+    textDecoration: nodeEle.style.textDecoration,
   }
   nodeEle.style.color = object.style.color
   nodeEle.style.background = object.style.background
   nodeEle.style.fontSize = object.style.fontSize + 'px'
   nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
+  nodeEle.style.textDecoration = object.style.textDecoration || 'initial'
   this.linkDiv()
   this.bus.fire('operation', {
     name: 'editStyle',
@@ -366,7 +368,7 @@ export const moveDownNode = function(el) {
   const obj = nodeEle.nodeObj
   moveDownObj(obj)
   if (grp.nextSibling) {
-    grp.insertAdjacentElement('afterend', grp.nextSibling)
+    grp.parentNode.insertBefore(grp.nextSibling, grp)
   } else {
     grp.parentNode.prepend(grp)
   }

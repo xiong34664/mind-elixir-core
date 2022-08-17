@@ -29,6 +29,7 @@ export const shapeTpc = function(tpc: Topic, nodeObj: NodeObj) {
     tpc.style.background = nodeObj.style.background || 'inherit'
     tpc.style.fontSize = nodeObj.style.fontSize + 'px'
     tpc.style.fontWeight = nodeObj.style.fontWeight || 'normal'
+    tpc.style.textDecoration = nodeObj.style.textDecoration || 'initial'
   }
 
   // TODO allow to add online image
