@@ -73,7 +73,7 @@ export default function(mind) {
   <div class="nm-fontcolor-container">
     ${colorList
     .map(color => {
-      return `<div class="split6"><div class="palette" data-color="${color}" style="background-color: ${color};"></div></div>`
+      return `<div class="palette" data-color="${color}" style="background-color: ${color};"></div>`
     })
     .join('')}
   </div>
@@ -88,6 +88,7 @@ export default function(mind) {
 
   // create container
   const menuContainer = document.createElement('nmenu')
+  mind.mobileMenu && menuContainer.classList.add('mobile')
   menuContainer.innerHTML = `
   <div class="button-container"><svg class="icon" aria-hidden="true">
   <use xlink:href="#icon-close"></use>
@@ -229,11 +230,11 @@ export default function(mind) {
   buttonContainer.onclick = e => {
     if (state === 'open') {
       state = 'close'
-      menuContainer.className = 'close'
+      menuContainer.classList.add('close')
       buttonContainer.innerHTML = `<svg class="icon" aria-hidden="true"><use xlink:href="#icon-menu"></use></svg>`
     } else {
       state = 'open'
-      menuContainer.className = ''
+      menuContainer.classList.remove('close')
       buttonContainer.innerHTML = `<svg class="icon" aria-hidden="true"><use xlink:href="#icon-close"></use></svg>`
     }
   }

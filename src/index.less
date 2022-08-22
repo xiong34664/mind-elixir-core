@@ -14,7 +14,7 @@
   height: 100%;
   width: 100%;
   overflow: scroll;
-  font-size: 15px;
+  font-size: 14px;
   &::-webkit-scrollbar {
     width: 0px;
     height: 0px;
@@ -210,6 +210,33 @@
   .topiclinks {
     g {
       cursor: pointer;
+    }
+  }
+}
+
+.mobile-map {
+  nmenu {
+    top: 0;
+    right: 0;
+    box-shadow: none;
+    border-radius: 0;
+    z-index: 100;
+  }
+  mmenu {
+    bottom: 50px;
+    left: 10px;
+    border-radius: 0;
+  }
+  toolbar {
+    box-shadow: none;
+    border-radius: 0;
+    &.rb {
+      right: 0;
+      bottom: 0;
+    }
+    &.lt {
+      top: 0;
+      left: 0;
     }
   }
 }

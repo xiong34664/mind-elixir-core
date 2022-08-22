@@ -1,31 +1,37 @@
 nmenu {
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 12px;
+  top: 12px;
   background: #fff;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   width: 240px;
   box-sizing: border-box;
-  padding: 0 15px 15px;
-  transition: 0.3s all;
+  padding: 12px;
   &.close {
     height: 30px;
-    width: 46px;
-    overflow: hidden;
+    width: 40px;
+    &>div {
+      visibility: hidden;
+    }
+    .button-container {
+      visibility: visible;
+    }
   }
   .button-container {
-    padding: 3px 0;
-    direction: rtl;
+    position: absolute;
+    cursor: pointer;
+    right: 12px;
+    top: 6px;
   }
   #nm-tag {
-    margin-top: 20px;
+    margin-top: 2px;
   }
   .nm-fontsize-container {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     div {
       height: 36px;
       width: 36px;
@@ -39,7 +45,10 @@ nmenu {
     }
   }
   .nm-fontcolor-container {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: repeat(6, 1fr);
   }
   input,
   textarea {
@@ -47,17 +56,12 @@ nmenu {
     border: 1px solid #dce2e6;
     border-radius: 3px;
     padding: 5px;
-    margin: 10px 0;
+    margin:4px 0;
     width: 100%;
     box-sizing: border-box;
   }
   textarea {
     resize: none;
-  }
-  .split6 {
-    display: inline-block;
-    width: 16.66%;
-    margin-bottom: 5px;
   }
   .palette {
     border-radius: 100%;

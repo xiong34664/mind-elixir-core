@@ -303,6 +303,9 @@ function MindElixir(this: MindElixirInstance, {
 
   this.container = $d.createElement('div') // map container
   this.container.className = 'map-container'
+  if (this.mobileMenu) {
+    this.container.className += ' mobile-map'
+  }
 
   this.map = $d.createElement('div') // map-canvas Element
   this.map.className = 'map-canvas'
@@ -423,6 +426,7 @@ MindElixir.prototype = {
     this.keypress && keypress(this)
 
     if (isMobile() && this.mobileMenu) {
+      this.scale(0.8)
       mobileMenu(this)
     } else {
       this.contextMenu && contextMenu(this, this.contextMenuOption)
