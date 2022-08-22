@@ -316,7 +316,7 @@ export const copyNode = function(node: NodeElement, to: NodeElement) {
   console.time('copyNode')
   const deepCloneObj = JSON.parse(
     JSON.stringify(node.nodeObj, (k, v) => {
-      if (k === 'parent') return undefined
+      if (k === 'parent' || k === 'root') return undefined
       return v
     })
   )
