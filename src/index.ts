@@ -303,9 +303,6 @@ function MindElixir(this: MindElixirInstance, {
 
   this.container = $d.createElement('div') // map container
   this.container.className = 'map-container'
-  if (this.mobileMenu) {
-    this.container.className += ' mobile-map'
-  }
 
   this.map = $d.createElement('div') // map-canvas Element
   this.map.className = 'map-canvas'
@@ -316,6 +313,12 @@ function MindElixir(this: MindElixirInstance, {
 
   this.box = $d.createElement('children')
   this.box.className = 'box'
+
+  // mobile模式下添加样式和缩小默认尺寸
+  if (this.mobileMenu) {
+    scale.call(this, 0.8)
+    this.container.className += ' mobile-map'
+  }
 
   // infrastructure
 
@@ -426,7 +429,6 @@ MindElixir.prototype = {
     this.keypress && keypress(this)
 
     if (isMobile() && this.mobileMenu) {
-      this.scale(0.8)
       mobileMenu(this)
     } else {
       this.contextMenu && contextMenu(this, this.contextMenuOption)
@@ -447,7 +449,7 @@ MindElixir.SIDE = SIDE
  * @memberof MindElixir
  * @static
  */
-MindElixir.version = '1.0.0'
+MindElixir.version = '1.1.4'
 MindElixir.E = findEle
 
 /**
