@@ -9,6 +9,10 @@ const createButton = (id, name) => {
   return button
 }
 
+function formatScale(scaleVal) {
+  return `${(scaleVal * 100).toFixed(0)}%`
+}
+
 function createToolBarRBContainer(mind) {
   const toolBarRBContainer = document.createElement('toolbar')
   const fc = createButton('fullscreen', 'full')
@@ -16,12 +20,12 @@ function createToolBarRBContainer(mind) {
   const zo = createButton('zoomout', 'move')
   const zi = createButton('zoomin', 'add')
   const percentage = document.createElement('span')
-  percentage.innerText = '100%'
+  percentage.innerText = formatScale(mind.scaleVal)
   toolBarRBContainer.appendChild(fc)
   toolBarRBContainer.appendChild(gc)
   toolBarRBContainer.appendChild(zo)
+  toolBarRBContainer.appendChild(percentage)
   toolBarRBContainer.appendChild(zi)
-  // toolBarRBContainer.appendChild(percentage)
   toolBarRBContainer.className = 'rb'
   fc.onclick = () => {
     mind.container.requestFullscreen()
@@ -32,11 +36,14 @@ function createToolBarRBContainer(mind) {
   zo.onclick = () => {
     if (mind.scaleVal < 0.6) return
     mind.scale((mind.scaleVal -= 0.2))
+    percentage.innerText = formatScale(mind.scaleVal)
   }
   zi.onclick = () => {
     if (mind.scaleVal > 1.6) return
     mind.scale((mind.scaleVal += 0.2))
+    percentage.innerText = formatScale(mind.scaleVal)
   }
+
   return toolBarRBContainer
 }
 function createToolBarLTContainer(mind) {
