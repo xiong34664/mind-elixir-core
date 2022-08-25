@@ -37,6 +37,9 @@
     background: #f6f6f6;
     .selected {
       outline: 2px solid #4dc4ff;
+      &+add {
+          opacity: 1;
+      }
     }
     root {
       position: absolute;
@@ -148,6 +151,23 @@
           bottom: -14px;
         }
       }
+      add {
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        background-image: url('./icons/add-circle.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        pointer-events: all;
+        z-index: 10;
+        opacity: 0;
+      }
+      &:hover {
+        epd.minus {
+          opacity: 1;
+        }
+      }
       epd {
         position: absolute;
         height: 18px;
@@ -163,9 +183,6 @@
           background-image: url('./icons/minus-circle.svg') !important;
           transition: all 0.3s;
           opacity: 0;
-          &:hover {
-            opacity: 1;
-          }
         }
       }
     }

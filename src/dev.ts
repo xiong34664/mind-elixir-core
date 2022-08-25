@@ -26,9 +26,9 @@ const options = {
   keypress: true, // default true
   locale: 'zh_CN', // [zh_CN,zh_TW,en,ja,pt] waiting for PRs
   overflowHidden: false, // default false
-  primaryLinkStyle: 2, // [1,2] default 1
-  primaryNodeVerticalGap: 15, // default 25
-  primaryNodeHorizontalGap: 15, // default 65
+  primaryLinkStyle: 1, // [1,2] default 1
+  primaryNodeVerticalGap: 25, // default 25
+  primaryNodeHorizontalGap: 65, // default 65
   mobileMenu: true, // default false
   contextMenuOption: {
     focus: true,
@@ -42,7 +42,7 @@ const options = {
       },
     ],
   },
-  allowUndo: false,
+  allowUndo: true,
   before: {
     insertSibling(el, obj) {
       return true
@@ -73,7 +73,7 @@ const mind2 = new (MindElixirLite as any)({
 mind2.init(example2)
 window.currentOperation = null
 mind.bus.addListener('operation', operation => {
-  console.log(operation)
+  console.log(operation, mind.getAllData())
   if (operation.name !== 'finishEdit') window.currentOperation = operation
   // return {
   //   name: action name,

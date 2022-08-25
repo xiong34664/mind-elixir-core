@@ -255,7 +255,7 @@ export const addChildFunction = function(nodeEle, node) {
   const { grp, top: newTop } = this.createGroup(newNodeObj)
 
   if (top.tagName === 'T') {
-    if (top.children[1]) {
+    if (top.children[2]) {
       top.nextSibling.appendChild(grp)
     } else {
       const c = $d.createElement('children')

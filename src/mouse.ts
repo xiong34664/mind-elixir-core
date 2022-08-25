@@ -3,8 +3,11 @@ export default function(mind) {
   mind.map.addEventListener('click', e => {
     // if (dragMoveHelper.afterMoving) return
     // e.preventDefault() // can cause a tag don't work
-    if (e.target.nodeName === 'EPD') {
-      mind.expandNode(e.target.previousSibling)
+    if (e.target.nodeName === 'ADD') {
+      console.log(mind)
+    } else if (e.target.nodeName === 'EPD') {
+      console.dir(e.target)
+      mind.expandNode(e.target.parentElement.firstElementChild)
     } else if (
       e.target.parentElement.nodeName === 'T' ||
       e.target.parentElement.nodeName === 'ROOT'
@@ -25,7 +28,7 @@ export default function(mind) {
 
   mind.map.addEventListener('dblclick', e => {
     e.preventDefault()
-    if (!mind.editable) return
+    if (!mind.editable || e.target.nodeName === 'ADD') return
     if (
       e.target.parentElement.nodeName === 'T' ||
       e.target.parentElement.nodeName === 'ROOT'

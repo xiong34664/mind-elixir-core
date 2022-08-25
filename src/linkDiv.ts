@@ -126,7 +126,17 @@ export default function linkDiv(primaryNode) {
       }
     }
     // set position of expander
-    const expander = el.children[0].children[1]
+    const add = el.children[0].children[1]
+    if (add) {
+      add.style.top = (add.parentNode.offsetHeight - add.offsetHeight) / 2 + 'px'
+      if (el.className === 'lhs') {
+        add.style.left = 5 + 'px'
+      } else {
+        add.style.left = add.parentNode.offsetWidth - 25 + 'px'
+      }
+    }
+    // set position of expander
+    const expander = el.children[0].children[2]
     if (expander) {
       expander.style.top = (expander.parentNode.offsetHeight - expander.offsetHeight) / 2 + 'px'
       if (el.className === 'lhs') {
@@ -220,7 +230,17 @@ function loopChildren(children: HTMLCollection, parent: HTMLElement, first?: boo
       }
     }
 
-    const expander = childT.children[1] as Expander
+    const add = childT.children[1] as Expander
+    if (add) {
+      add.style.top = (childT.offsetHeight - add.offsetHeight) / 2 + 'px'
+      if (direction === 'lhs') {
+        add.style.left = 3 + 'px'
+      } else if (direction === 'rhs') {
+        add.style.left = childT.offsetWidth - 25 + 'px'
+      }
+    }
+
+    const expander = childT.children[2] as Expander
     if (expander) {
       expander.style.top = (childT.offsetHeight - expander.offsetHeight) / 2 + 'px'
       if (direction === 'lhs') {

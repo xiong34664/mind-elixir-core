@@ -167,6 +167,11 @@ export function createInputDiv(tpc: Topic) {
   console.timeEnd('createInputDiv')
 }
 
+export const createAdd = function(): Expander {
+  const expander: Expander = $d.createElement('add')
+  return expander
+}
+
 export const createExpander = function(expanded: boolean | undefined): Expander {
   const expander: Expander = $d.createElement('epd')
   // 包含未定义 expanded 的情况，未定义视为展开
@@ -205,6 +210,7 @@ export function createChildren(data: NodeObj[], container?: HTMLElement, directi
       }
     }
     const top = this.createTop(nodeObj)
+    top.appendChild(createAdd())
     if (nodeObj.children && nodeObj.children.length > 0) {
       top.appendChild(createExpander(nodeObj.expanded))
       grp.appendChild(top)
