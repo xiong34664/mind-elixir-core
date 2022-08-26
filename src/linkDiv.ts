@@ -17,6 +17,7 @@ export default function linkDiv(primaryNode) {
   var primaryNodeHorizontalGap = this.primaryNodeHorizontalGap || PRIMARY_NODE_HORIZONTAL_GAP
   var primaryNodeVerticalGap = this.primaryNodeVerticalGap || PRIMARY_NODE_VERTICAL_GAP
   console.time('linkDiv')
+  const curved = this.primaryLinkStyle === 1
   const root = this.root
   root.style.cssText = `top:${10000 - root.offsetHeight / 2}px;left:${10000 - root.offsetWidth / 2}px;`
   const primaryNodeList = this.box.children
@@ -82,7 +83,7 @@ export default function linkDiv(primaryNode) {
 
       // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#path_commands
       let LEFT = 10000
-      if (this.primaryLinkStyle === 2) {
+      if (!curved) {
         if (this.direction === SIDE) {
           LEFT = 10000 - root.offsetWidth / 6
         }
@@ -107,7 +108,7 @@ export default function linkDiv(primaryNode) {
       y2 = base + currentOffsetR + elOffsetH / 2
 
       let LEFT = 10000
-      if (this.primaryLinkStyle === 2) {
+      if (!curved) {
         if (this.direction === SIDE) {
           LEFT = 10000 + root.offsetWidth / 6
         }
@@ -152,7 +153,7 @@ export default function linkDiv(primaryNode) {
       const parent = el.children[0]
       const children = el.children[1].children
       path = ''
-      loopChildren(children, parent, true)
+      loopChildren(children, parent, curved)
       svg.appendChild(createPath(path))
     }
   }
@@ -172,7 +173,7 @@ export default function linkDiv(primaryNode) {
 
 // core function of generate svg3rd
 let path = ''
-function loopChildren(children: HTMLCollection, parent: HTMLElement, first?: boolean) {
+function loopChildren(children: HTMLCollection, parent: HTMLElement, curved?: boolean) {
   const parentOT = parent.offsetTop
   const parentOL = parent.offsetLeft
   const parentOW = parent.offsetWidth
@@ -182,21 +183,17 @@ function loopChildren(children: HTMLCollection, parent: HTMLElement, first?: boo
     const childT: HTMLElement = child.children[0] as HTMLElement // t tag inside the child dom
     const childTOT = childT.offsetTop
     const childTOH = childT.offsetHeight
-    let y1: number
-    if (first) {
-      y1 = parentOT + parentOH / 2
-    } else {
-      y1 = parentOT + parentOH
-    }
-    const y2 = childTOT + childTOH
+    const y1: number = parentOT + parentOH / 2
+
+    const y2 = childTOT + childTOH / 2
     let x1: number, x2: number, xMiddle: number
     const direction = child.offsetParent.className
     if (direction === 'lhs') {
       x1 = parentOL + GAP
       xMiddle = parentOL
-      x2 = parentOL - childT.offsetWidth + GAP
+      x2 = parentOL - GAP
 
-      if (childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
+      if (!curved || children.length !== 2 && childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
         // 相差+-50内直接直线
         path += `M ${x1} ${y1} H ${xMiddle} V ${y2} H ${x2}`
       } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
@@ -209,9 +206,9 @@ function loopChildren(children: HTMLCollection, parent: HTMLElement, first?: boo
     } else if (direction === 'rhs') {
       x1 = parentOL + parentOW - GAP
       xMiddle = parentOL + parentOW
-      x2 = parentOL + parentOW + childT.offsetWidth - GAP
+      x2 = parentOL + parentOW + GAP
 
-      if (childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
+      if (!curved || children.length !== 2 && childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
         path += `M ${x1} ${y1} H ${xMiddle} V ${y2} H ${x2}`
       } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
         path += `M ${x1} ${y1} H ${xMiddle} V ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R} ${y2} H ${x2}`
@@ -236,6 +233,6 @@ function loopChildren(children: HTMLCollection, parent: HTMLElement, first?: boo
     }
     // traversal
     const nextChildren = child.children[1].children
-    if (nextChildren.length > 0) loopChildren(nextChildren, childT)
+    if (nextChildren.length > 0) loopChildren(nextChildren, childT, curved)
   }
 }
