@@ -356,3 +356,16 @@ LinkDragMoveHelper.prototype.clear = function() {
   this.lastX = null
   this.lastY = null
 }
+
+/**
+ * 切换添加按钮
+ * 切换按钮在节点之后
+ * @param currentNode 当前节点
+ * @param type 添加/删除
+ * @returns
+ */
+export function onAddBtn(currentNode : HTMLElement, type: 'add' | 'remove') {
+  if (!currentNode.nextElementSibling) return
+  const { classList } = currentNode.nextElementSibling
+  classList[type]('add')
+}

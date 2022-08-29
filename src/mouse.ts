@@ -3,7 +3,9 @@ export default function(mind) {
   mind.map.addEventListener('click', e => {
     // if (dragMoveHelper.afterMoving) return
     // e.preventDefault() // can cause a tag don't work
-    if (e.target.nodeName === 'EPD') {
+    if (e.target.classList.value.includes('add')) {
+      mind.addChild()
+    } else if (e.target.nodeName === 'EPD') {
       mind.expandNode(e.target.previousSibling)
     } else if (
       e.target.parentElement.nodeName === 'T' ||

@@ -5,6 +5,7 @@ export type Top = HTMLElement
 
 export type Group = HTMLElement
 
+export type Oper = HTMLElement
 export interface Topic extends HTMLElement {
   nodeObj?: NodeObj
   linkContainer?: HTMLElement
@@ -81,6 +82,9 @@ export const createGroup = function(nodeObj: NodeObj, omitChildren?: boolean) {
       const children = this.createChildren(nodeObj.children)
       grp.appendChild(children)
     }
+  } else {
+    const oper: Oper = $d.createElement('oper')
+    top.appendChild(oper)
   }
   return { grp, top }
 }
@@ -213,6 +217,8 @@ export function createChildren(data: NodeObj[], container?: HTMLElement, directi
         grp.appendChild(children)
       }
     } else {
+      const oper: Oper = $d.createElement('oper')
+      top.appendChild(oper)
       grp.appendChild(top)
     }
     chldr.appendChild(grp)

@@ -1,4 +1,5 @@
 import { findEle } from './utils/dom'
+import { onAddBtn } from './utils/index'
 /**
  * @exports -
  * workaround for jsdoc
@@ -24,9 +25,13 @@ export const selectNode = function(targetElement, isNewNode, clickEvent) {
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
-  if (this.currentNode) this.currentNode.className = ''
+  if (this.currentNode) {
+    this.currentNode.className = ''
+    onAddBtn(this.currentNode, 'remove')
+  }
   targetElement.className = 'selected'
   this.currentNode = targetElement
+  onAddBtn(this.currentNode, 'add')
   if (isNewNode) {
     this.bus.fire('selectNewNode', targetElement.nodeObj, clickEvent)
   } else {
@@ -37,6 +42,7 @@ export const selectNode = function(targetElement, isNewNode, clickEvent) {
 export const unselectNode = function() {
   if (this.currentNode) {
     this.currentNode.className = ''
+    onAddBtn(this.currentNode, 'remove')
   }
   this.currentNode = null
   this.bus.fire('unselectNode')
@@ -293,6 +299,18 @@ export const initRight = function() {
  */
 export const initSide = function() {
   this.direction = 2
+  this.refresh()
+}
+
+/**
+ * @function
+ * @instance
+ * @name setLinkStyle
+ * @description 连接线样式 1为曲线 2为直线.
+ * @memberof MapInteraction
+ */
+export const setLinkStyle = function() {
+  this.primaryLinkStyle = this.primaryLinkStyle === 1 ? 2 : 1
   this.refresh()
 }
 

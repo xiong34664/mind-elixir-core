@@ -255,6 +255,9 @@ export const addChildFunction = function(nodeEle, node) {
   const { grp, top: newTop } = this.createGroup(newNodeObj)
 
   if (top.tagName === 'T') {
+    if (top.children[1].nodeName === 'OPER') {
+      top.children[1].remove()
+    }
     if (top.children[1]) {
       top.nextSibling.appendChild(grp)
     } else {
@@ -478,6 +481,9 @@ export const moveNode = function(from, to) {
     if (fromChilren.className === 'box') {
       // clear direaction class of primary node
       fromTop.parentNode.className = ''
+    }
+    if (toTop.children[1].nodeName === 'OPER') {
+      toTop.children[1].remove()
     }
     if (toTop.children[1]) {
       // expander exist
