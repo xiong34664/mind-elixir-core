@@ -1,6 +1,6 @@
 import { createPath, createMainPath, createLinkSvg } from './utils/svg'
 import { findEle, Expander } from './utils/dom'
-import { SIDE, GAP, TURNPOINT_R, PRIMARY_NODE_HORIZONTAL_GAP, PRIMARY_NODE_VERTICAL_GAP } from './const'
+import { SIDE, GAP, PRIMARY_NODE_HORIZONTAL_GAP, PRIMARY_NODE_VERTICAL_GAP } from './const'
 
 /**
  * Link nodes with svg,
@@ -78,7 +78,7 @@ export default function linkDiv(primaryNode) {
     if (el.className === 'lhs') {
       el.style.top = base + currentOffsetL + 'px'
       el.style.left = alignRight - el.offsetWidth + 'px'
-      x2 = alignRight - 15 // padding
+      x2 = alignRight - GAP // padding
       y2 = base + currentOffsetL + elOffsetH / 2
 
       // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#path_commands
@@ -88,9 +88,9 @@ export default function linkDiv(primaryNode) {
           LEFT = 10000 - root.offsetWidth / 6
         }
         if (y2 < 10000) {
-          primaryPath += `M ${LEFT} 10000 V ${y2 + 20} C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT - 20} ${y2} H ${x2}`
+          primaryPath += `M ${LEFT} 10000  V ${y2 + 5} H ${x2}`
         } else {
-          primaryPath += `M ${LEFT} 10000 V ${y2 - 20} C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT - 20} ${y2} H ${x2}`
+          primaryPath += `M ${LEFT} 10000 V ${y2 + 5} H ${x2}`
         }
       } else {
         primaryPath += `M 10000 10000 C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
@@ -104,7 +104,7 @@ export default function linkDiv(primaryNode) {
     } else {
       el.style.top = base + currentOffsetR + 'px'
       el.style.left = alignLeft + 'px'
-      x2 = alignLeft + 15 // padding
+      x2 = alignLeft + GAP // padding
       y2 = base + currentOffsetR + elOffsetH / 2
 
       let LEFT = 10000
@@ -113,9 +113,9 @@ export default function linkDiv(primaryNode) {
           LEFT = 10000 + root.offsetWidth / 6
         }
         if (y2 < 10000) {
-          primaryPath += `M ${LEFT} 10000 V ${y2 + 20} C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} H ${x2}`
+          primaryPath += `M ${LEFT} 10000 V ${y2 + 5} H ${x2}`
         } else {
-          primaryPath += `M ${LEFT} 10000 V ${y2 - 20} C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} H ${x2}`
+          primaryPath += `M ${LEFT} 10000 V ${y2 + 5} H ${x2}`
         }
       } else {
         primaryPath += `M 10000 10000 C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
@@ -193,27 +193,27 @@ function loopChildren(children: HTMLCollection, parent: HTMLElement, curved?: bo
       xMiddle = parentOL
       x2 = parentOL - GAP
 
-      if (!curved || children.length !== 2 && childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
-        // 相差+-50内直接直线
+      if (!curved || children.length === 1) {
+        // 只有一个自节点  或者是直线时
         path += `M ${x1} ${y1} H ${xMiddle} V ${y2} H ${x2}`
-      } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
+      } else if (childTOT + childTOH / 2 >= parentOT + parentOH / 2 - 25) {
         // 子底部低于父中点
-        path += `M ${x1} ${y1} H ${xMiddle} V ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R} ${y2} H ${x2}`
+        path += `M ${x1} ${y1} C ${(x2 + x1) / 2 + 25 * 0.03} ${y1}  ${(x2 + x1) / 2} ${y2} ${x2} ${y2}`
       } else {
         // 子底部高于父中点
-        path += `M ${x1} ${y1} H ${xMiddle} V ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R} ${y2} H ${x2}`
+        path += `M ${x1} ${y1} C ${(x2 + x1) / 2 + 25 * 0.03} ${y1}  ${(x2 + x1) / 2} ${y2} ${x2} ${y2}`
       }
     } else if (direction === 'rhs') {
       x1 = parentOL + parentOW - GAP
       xMiddle = parentOL + parentOW
       x2 = parentOL + parentOW + GAP
 
-      if (!curved || children.length !== 2 && childTOT + childTOH < parentOT + parentOH / 2 + 50 && childTOT + childTOH > parentOT + parentOH / 2 - 50) {
+      if (!curved || children.length === 1) {
         path += `M ${x1} ${y1} H ${xMiddle} V ${y2} H ${x2}`
-      } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
-        path += `M ${x1} ${y1} H ${xMiddle} V ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R} ${y2} H ${x2}`
+      } else if (childTOT + childTOH >= parentOT + parentOH / 2 + 25) {
+        path += `M ${x1} ${y1} C ${(x2 + x1) / 2 + 25 * 0.03} ${y1}  ${(x2 + x1) / 2} ${y2} ${x2} ${y2}`
       } else {
-        path += `M ${x1} ${y1} H ${xMiddle} V ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R} ${y2} H ${x2}`
+        path += `M ${x1} ${y1} C ${(x2 + x1) / 2 + 25 * 0.03} ${y1}  ${(x2 + x1) / 2} ${y2} ${x2} ${y2}`
       }
     }
 
