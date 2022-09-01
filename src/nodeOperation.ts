@@ -134,6 +134,7 @@ export const insertSibling = function(el, node) {
   this.bus.fire('operation', {
     name: 'insertSibling',
     obj: newNodeObj,
+    originSiblingId: nodeEle.nodeObj.id,
   })
 }
 
@@ -180,6 +181,7 @@ export const insertBefore = function(el, node) {
   this.bus.fire('operation', {
     name: 'insertSibling',
     obj: newNodeObj,
+    originSiblingId: nodeEle.nodeObj.id,
   })
 }
 
@@ -255,7 +257,7 @@ export const addChildFunction = function(nodeEle, node) {
   const { grp, top: newTop } = this.createGroup(newNodeObj)
 
   if (top.tagName === 'T') {
-    if (top.children[1].nodeName === 'OPER') {
+    if (top.children[1]?.nodeName === 'OPER') {
       top.children[1].remove()
     }
     if (top.children[1]) {
@@ -294,6 +296,7 @@ export const addChild = function(el: NodeElement, node: NodeObj) {
   this.bus.fire('operation', {
     name: 'addChild',
     obj: newNodeObj,
+    originParentId: nodeEle.nodeObj.id,
   })
   console.timeEnd('addChild')
   if (!node) {
@@ -329,6 +332,7 @@ export const copyNode = function(node: NodeElement, to: NodeElement) {
   this.bus.fire('operation', {
     name: 'copyNode',
     obj: newNodeObj,
+    originParentId: to.nodeObj.id,
   })
 }
 
@@ -533,7 +537,7 @@ export const moveNodeBefore = function(from, to) {
   if (toGrp.className) fromGrp.className = toGrp.className
   this.linkDiv()
   this.bus.fire('operation', {
-    name: 'moveNodeBefore',
+    name: originParentId !== toObj.parent.id ? 'moveNode' : 'moveNodeBefore', // 如果是同一个父节点就是前后移动 反之为moveNode
     obj: { fromObj, toObj, originParentId },
   })
 }
@@ -564,7 +568,7 @@ export const moveNodeAfter = function(from, to) {
   if (toGrp.className) fromGrp.className = toGrp.className
   this.linkDiv()
   this.bus.fire('operation', {
-    name: 'moveNodeAfter',
+    name: originParentId !== toObj.parent.id ? 'moveNode' : 'moveNodeAfter',
     obj: { fromObj, toObj, originParentId },
   })
 }

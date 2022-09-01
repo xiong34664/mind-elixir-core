@@ -60,6 +60,13 @@ export default function(mind) {
         mind.waitCopy = mind.currentNode
       }
     },
+    88(e) {
+      if (e.metaKey || e.ctrlKey) {
+        // ctrl x
+        mind.waitCopy = mind.currentNode
+        mind.removeNode()
+      }
+    },
     86(e) {
       if (!mind.waitCopy) return
       if (e.metaKey || e.ctrlKey) {
@@ -67,6 +74,11 @@ export default function(mind) {
         mind.copyNode(mind.waitCopy, mind.currentNode)
         mind.waitCopy = null
       }
+    },
+    // ctrl y
+    89: e => {
+      if (!mind.allowUndo) return
+      if (e.metaKey || e.ctrlKey) mind.redo()
     },
     // ctrl z
     90: e => {

@@ -112,7 +112,7 @@ export interface NodeObj {
 }
 
 export interface NodeElement extends HTMLElement {
-  nodeObj:Object
+  nodeObj: NodeObj
 }
 export interface MindElixirData {
   nodeData: NodeObj,
@@ -133,6 +133,9 @@ export interface MindElixirInstance {
   history: operation[],
   isUndo: boolean,
   undo: () => void,
+
+  future: operation[]
+  redo: () => void
 
   direction: number,
   locale: string,
@@ -265,9 +268,10 @@ function MindElixir(this: MindElixirInstance, {
       this.isUndo = false
       return
     }
-    if (['moveNode', 'removeNode', 'addChild', 'finishEdit', 'editStyle', 'editTags', 'editIcons'].includes(
+    if (['moveNode', 'moveNodeBefore', 'moveNodeAfter', 'removeNode', 'addChild', 'finishEdit', 'editStyle', 'editTags', 'editIcons', 'insertSibling', 'copyNode'].includes(
       operation.name
     )) {
+      this.future = []
       this.history.push(operation)
       // console.log(operation, this.history)
     }
@@ -278,20 +282,49 @@ function MindElixir(this: MindElixirInstance, {
   this.undo = function() {
     const operation = this.history.pop()
     if (!operation) return
+    this.future.push(operation)
     this.isUndo = true
     if (operation.name === 'moveNode') {
-      this.moveNode(
-        E(operation.obj.fromObj.id),
-        E(operation.obj.originParentId)
-      )
+      this.moveNode(E(operation.obj.fromObj.id), E(operation.obj.originParentId))
+    } if (operation.name === 'moveNodeBefore') {
+      this.moveNodeAfter(E(operation.obj.fromObj.id), E(operation.obj.toObj.id))
+    } if (operation.name === 'moveNodeAfter') {
+      this.moveNodeBefore(E(operation.obj.fromObj.id), E(operation.obj.toObj.id))
     } else if (operation.name === 'removeNode') {
       if (operation.originSiblingId) {
         this.insertBefore(E(operation.originSiblingId), operation.obj)
       } else {
         this.addChild(E(operation.originParentId), operation.obj)
       }
-    } else if (operation.name === 'addChild' || operation.name === 'copyNode') {
+    } else if (['addChild', 'copyNode', 'insertSibling'].includes(operation.name)) {
       this.removeNode(E(operation.obj.id))
+    } else if (operation.name === 'finishEdit') {
+      this.setNodeTopic(E(operation.obj.id), operation.origin)
+    } else {
+      this.isUndo = false
+    }
+  }
+  this.future = [] // TODO
+  this.redo = function() {
+    const operation = this.future.pop()
+    if (!operation) return
+    this.history.push(operation)
+
+    this.isUndo = true
+    if (operation.name === 'moveNode') {
+      this.moveNode(E(operation.obj.fromObj.id), E(operation.obj.originParentId))
+    } if (operation.name === 'moveNodeBefore') {
+      this.moveNodeBefore(E(operation.obj.fromObj.id), E(operation.obj.toObj.id))
+    } if (operation.name === 'moveNodeAfter') {
+      this.moveNodeAfter(E(operation.obj.fromObj.id), E(operation.obj.toObj.id))
+    } else if (operation.name === 'removeNode') {
+      this.removeNode(E(operation.obj.id))
+    } else if (['addChild', 'copyNode', 'insertSibling'].includes(operation.name)) {
+      if (operation.originSiblingId) {
+        this.insertSibling(E(operation.originSiblingId), operation.obj)
+      } else {
+        this.addChild(E(operation.originParentId), operation.obj)
+      }
     } else if (operation.name === 'finishEdit') {
       this.setNodeTopic(E(operation.obj.id), operation.origin)
     } else {
